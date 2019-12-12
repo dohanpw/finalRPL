@@ -14,21 +14,40 @@
 Route::get('/', function () {
     return view('layouts.master');
 });*/
+
+Route::get('/', 'AuthController@login');
+
+//AUTH
 Route::get('/login', 'AuthController@login')->name('login');
 Route::post('/postlogin', 'AuthController@postlogin');
 Route::get('/logout', 'AuthController@logout');
 
-Route::get('/dashboard','DashboardsController@index');
 
-Route::group(['middleware' => 'auth'], function () {
+
+
+Route::group(['middleware' => ['auth','CheckRole:admin,guru']], function () {
     
     Route::get('/siswa', 'StudentsController@index');
+    // Route::get('/siswa/create', 'StudentsController@create');
+    
+    Route::get('/siswa/{id}/profile', 'StudentsController@profile');
+});
+
+
+Route::group(['middleware' => ['auth','CheckRole:admin']], function () {
     Route::get('/siswa/create', 'StudentsController@create');
     Route::post('/siswa', 'StudentsController@store');
     Route::get('/siswa/{id}/edit', 'StudentsController@edit');
     Route::post('/siswa/{id}/update', 'StudentsController@update');
     Route::get('/siswa/{id}/delete', 'StudentsController@destroy');
-    Route::get('/siswa/{id}/profile', 'StudentsController@profile');
+});
+
+Route::group(['middleware' => ['auth','CheckRole:guru']], function () {
     Route::post('/siswa/{id}/addnilai', 'StudentsController@addnilai');
+});
+
+Route::group(['middleware' => ['auth','CheckRole:admin,guru,siswa']], function () {
+    Route::get('/dashboard','DashboardsController@index');
+    
 });
 

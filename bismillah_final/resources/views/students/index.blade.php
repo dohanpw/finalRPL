@@ -14,7 +14,9 @@
                     <div class="panel">
                         <div class="panel-heading">
                             <div class="right">
+                                @if (auth()->user()->role == 'admin')
                                 <a href="/siswa/create" class="btn btn-primary btn-sm">Tambah Siswa</a>
+                                @endif
                             </div>
                         </div>
                         <div class="panel-body">
@@ -27,7 +29,9 @@
                                         <th>Agama</th>
                                         {{-- <th>Email</th> --}}
                                         <th>Alamat</th>
+                                        @if (Auth()->user()->role =='admin' )   
                                         <th>Aksi</th>
+                                        @endif
                                         
                                     </tr>
                                 </thead>
@@ -40,10 +44,12 @@
                                         <td>{{$std->agama}}</td>
                                         {{-- <td>{{$std->nama_depan}}</td> --}}
                                         <td>{{$std->alamat}}</td>
+                                        @if (Auth()->user()->role == 'admin')
                                         <td>
                                             <a href="/siswa/{{$std->id}}/edit" class="btn btn-warning btn-xs">Edit</a>
                                             <a href="/siswa/{{$std->id}}/delete" class="btn btn-danger btn-xs" onclick="return confirm('Data Akan di Hapus?')">Delete</a>    
                                         </td>
+                                        @endif
                                     </tr>
                                     @endforeach
                                 </tbody>
