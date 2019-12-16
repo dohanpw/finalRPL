@@ -15,7 +15,7 @@
         
                         <h1 class="mt-3">Edit Data Mahasiswa </h1>
                         @if (session('sukses'))
-                            <div class="alert alert-sukses" role="alert">
+                            <div class="alert alert-success" role="alert">
                                 {{session('sukses')}}
                             </div>
                         @endif

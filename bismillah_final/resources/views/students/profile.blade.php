@@ -7,6 +7,16 @@
             <div class="container-fluid">
                 <div class="panel panel-profile">
                     <div class="clearfix">
+                            @if (session('sukses'))
+                            <div class="alert alert-success" role="alert">
+                                {{session('sukses')}}
+                            </div>
+                        @endif            
+                        @if (session('error'))
+                            <div class="alert alert-danger" role="alert">
+                                {{session('error')}}
+                            </div>
+                        @endif
                         <!-- LEFT COLUMN -->
                         <div class="profile-left">
                             <!-- PROFILE HEADER -->
@@ -88,8 +98,13 @@
                                         </div>
                                     </div>
                             </div>
-                            <div class="tab-content">
+                            <div class="panel">
+                                <div id="table">
+
+                                </div>
                             </div>
+                            {{-- <div class="tab-content">
+                            </div> --}}
                             <!-- END TABBED CONTENT -->
                         </div>
                         <!-- END RIGHT COLUMN -->
@@ -138,4 +153,45 @@
         </div>
       </div>
     
+@endsection
+
+@section('footer')
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<script>
+Highcharts.chart('table', {
+    chart: {
+        type: 'column'
+    },
+    title: {
+        text: 'Laporan Nilai Siswa'
+    },
+    xAxis: {
+        categories: {!!json_encode($categories)!!},
+        crosshair: true
+    },
+    yAxis: {
+        min: 0,
+        title: {
+            text: 'Nilai'
+        }
+    },
+    tooltip: {
+        headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+        footerFormat: '</table>',
+        shared: true,
+        useHTML: true
+    },
+    plotOptions: {
+        column: {
+            pointPadding: 0.2,
+            borderWidth: 0
+        }
+    },
+    series: [{
+        name: 'Nilai',
+        data: {!!json_encode($data)!!}
+
+    }]
+});
+</script>
 @endsection

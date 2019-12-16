@@ -136,11 +136,31 @@ class StudentsController extends Controller
 
     public function profile($id)
     {
-        $student = student::find($id);
-        $mapel = subject::all();
+        $student = Student::find($id);
+        $subject = subject::all();
         // $subject =  
         // dd($student);
-        return view('students.profile',['student'=>$student,'mapel'=>$mapel]);
+
+        //menyiakan data untuk chart
+        $categories = [];
+        $data = [];
+        foreach ($subject as $sbjct) {
+            if ($student->subject()->wherePivot('subject_id',$sbjct->id)->first()) {
+                $categories[] = $sbjct->nama;
+                $data[] = $student->subject()->wherePivot('subject_id',$sbjct->id)->first()->pivot->nilai;   
+            }
+        }
+        // dd($mp);
+        // $data[] = $student->subject()->wherePivot('subject_id',$mp->id)->first()->pivot->nilai;
+        // dd($data);
+        /*
+        if ($student->subject()->wherePivot('subject_id',$mp->id)->first() != NULL) {
+            // return redirect('siswa/'.$id.'/profile');
+        }*/
+        
+        // dd($categories);
+        // dd($data);
+        return view('students.profile',['student'=>$student,'mapel'=>$subject,'categories'=>$categories,'data'=>$data]);
 
     }
 
@@ -150,6 +170,11 @@ class StudentsController extends Controller
         // dd($idstudent);
 
         $student = student::find($idstudent);
+
+        if ($student->subject()->where('subject_id',$request->mapel)->exists()) {
+
+            return redirect('siswa/'.$idstudent.'/profile')->with('error','Data nilai telah ada'); 
+        }
         $student->subject()->attach($request->mapel,['nilai'=>$request->nilai]);
 
         return redirect('siswa/'.$idstudent.'/profile')->with('sukses','Data nilai Berhasil di Tambah');
