@@ -54,10 +54,10 @@ class StudentsController extends Controller
         $student->alamat = $request->alamat;
         $student->avatar = $request->avatar;
 
-        dd($student);
+        // dd($student);
         $student->save();
         
-        return view('/siswa')->with('sukses','data berhasil ditambah!!!');
+        return redirect('/siswa')->with('sukses','data berhasil ditambah!!!');
         
     }
 
@@ -164,6 +164,9 @@ class StudentsController extends Controller
 
     }
 
+
+    // urusan perNilaian
+
     public function addnilai(Request $request,$idstudent)
     {
         // dd($request->all());
@@ -178,6 +181,14 @@ class StudentsController extends Controller
         $student->subject()->attach($request->mapel,['nilai'=>$request->nilai]);
 
         return redirect('siswa/'.$idstudent.'/profile')->with('sukses','Data nilai Berhasil di Tambah');
+    }
+
+    public function deletenilai($id,$idsubject)
+    {
+        $student = Student::find($id);
+        $student->subject()->detach($idsubject);
+        
+        return redirect()->back()->with('sukses','nilai berhasil di hapus');
     }
     
 }

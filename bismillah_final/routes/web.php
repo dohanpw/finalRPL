@@ -29,8 +29,9 @@ Route::group(['middleware' => ['auth','CheckRole:admin,guru']], function () {
     
     Route::get('/siswa', 'StudentsController@index');
     // Route::get('/siswa/create', 'StudentsController@create');
-    
     Route::get('/siswa/{id}/profile', 'StudentsController@profile');
+    Route::post('/siswa/{id}/addnilai', 'StudentsController@addnilai');
+    Route::get('/siswa/{id}/{idsubject}/deletenilai', 'StudentsController@deletenilai');
 });
 
 
@@ -43,7 +44,7 @@ Route::group(['middleware' => ['auth','CheckRole:admin']], function () {
 });
 
 Route::group(['middleware' => ['auth','CheckRole:guru']], function () {
-    Route::post('/siswa/{id}/addnilai', 'StudentsController@addnilai');
+    
 });
 
 Route::group(['middleware' => ['auth','CheckRole:admin,guru,siswa']], function () {

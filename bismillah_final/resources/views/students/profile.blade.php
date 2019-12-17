@@ -1,4 +1,7 @@
 @extends('layouts.master')
+@section('header')
+<link href="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/bootstrap3-editable/css/bootstrap-editable.css" rel="stylesheet"/>
+@endsection
 
 @section('content')
 <div class="main">
@@ -63,7 +66,7 @@
                             <!-- TABBED CONTENT -->
                             <div class="custom-tabs-line tabs-line-bottom left-aligned">
                                 <div class="">
-                                    @if (Auth()->user()->role == 'guru')
+                                    @if (Auth()->user()->role != 'siswa')
                                     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
                                         Tambah Nilai
                                     </button>
@@ -82,15 +85,20 @@
                                                         <th>Nama</th>
                                                         <th>Semester</th>
                                                         <th>Nilai</th>
+                                                        <th>Aksi</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
                                                     @foreach ($student->subject as $subject)
                                                     <tr>
-                                                    <td>{{$subject->kode}}</td>
-                                                    <td>{{$subject->nama}}</td>
-                                                    <td>{{$subject->semester}}</td>
-                                                    <td>{{$subject->pivot->nilai}}</td>
+                                                        <td>{{$subject->kode}}</td>
+                                                        <td>{{$subject->nama}}</td>
+                                                        <td>{{$subject->semester}}</td>
+                                                        <td><a href="#" class="nilai"  data-type="text" data-pk="{{$subject->id}}" {{--data-pk = primary key data--}} 
+                                                        data-url="/api/siswa/{{$student->id}}/editnilai" data-title="Masukkan Nilai">{{$subject->pivot->nilai}}</a></td>
+                                                        <td>
+                                                        <a href="/siswa/{{$student->id}}/{{$subject->id}}/deletenilai" class="btn btn-danger btn-xs" onclick="return confirm('nilai Akan di Hapus?')">Delete</a>
+                                                        </td>
                                                     </tr>
                                                     @endforeach
                                                 </tbody>
@@ -143,11 +151,12 @@
                         
                     @endif
                     </div>
+                    
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                      <button type="submit" class="btn btn-primary">Save changes</button>
+                    </div>
                 </form>
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-              <button type="button" class="btn btn-primary">Save changes</button>
             </div>
           </div>
         </div>
@@ -156,6 +165,7 @@
 @endsection
 
 @section('footer')
+<script src="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/bootstrap3-editable/js/bootstrap-editable.min.js"></script>
 <script src="https://code.highcharts.com/highcharts.js"></script>
 <script>
 Highcharts.chart('table', {
@@ -192,6 +202,10 @@ Highcharts.chart('table', {
         data: {!!json_encode($data)!!}
 
     }]
-});
+
+    });
+    $(document).ready(function() { 
+    $('.nilai').editable();
+    });
 </script>
 @endsection
