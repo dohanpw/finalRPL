@@ -85,6 +85,7 @@
                                                         <th>Nama</th>
                                                         <th>Semester</th>
                                                         <th>Nilai</th>
+                                                        <th>Guru</th>
                                                         <th>Aksi</th>
                                                     </tr>
                                                 </thead>
@@ -96,6 +97,7 @@
                                                         <td>{{$subject->semester}}</td>
                                                         <td><a href="#" class="nilai"  data-type="text" data-pk="{{$subject->id}}" {{--data-pk = primary key data--}} 
                                                         data-url="/api/siswa/{{$student->id}}/editnilai" data-title="Masukkan Nilai">{{$subject->pivot->nilai}}</a></td>
+                                                        <td>{{$subject->teacher->nama}}</td>
                                                         <td>
                                                         <a href="/siswa/{{$student->id}}/{{$subject->id}}/deletenilai" class="btn btn-danger btn-xs" onclick="return confirm('nilai Akan di Hapus?')">Delete</a>
                                                         </td>

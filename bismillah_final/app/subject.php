@@ -13,5 +13,10 @@ class subject extends Model
     {
         return $this->belongsToMany(Student::class)->withPivot(['nilai'])->withTimeStamps();
     }
+
+    public function teacher()
+    {
+        return $this->belongsTo(teacher::class);
+    }
 }
 
