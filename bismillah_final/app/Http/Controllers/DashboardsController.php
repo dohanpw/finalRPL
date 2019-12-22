@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Student;
 
 class DashboardsController extends Controller
 {
@@ -14,7 +15,21 @@ class DashboardsController extends Controller
     public function index()
     {
         //
-        return view('dashboards.index');
+
+        $student = Student::all();
+        $student->map(function($value){
+            $value->ratanilai = $value->ratanilai();
+            return $value;
+        });
+        $student = $student->sortByDesc('ratanilai')->take(5);
+        // dd($student);
+
+        //banyak guru
+        $banyakguru = \App\Teacher::count();
+        //banyak murid
+        $banyaksiswa = Student::count();
+
+        return view('dashboards.index',['siswa'=>$student,'banyaksiswa'=>$banyaksiswa,'banyakguru'=>$banyakguru]);
     }
 
     /**

@@ -29,6 +29,7 @@
                                         <th>Agama</th>
                                         {{-- <th>Email</th> --}}
                                         <th>Alamat</th>
+                                        <th>Rata-Rata Nilai</th>
                                         @if (Auth()->user()->role =='admin' )   
                                         <th>Aksi</th>
                                         @endif
@@ -44,6 +45,7 @@
                                         <td>{{$std->agama}}</td>
                                         {{-- <td>{{$std->nama_depan}}</td> --}}
                                         <td>{{$std->alamat}}</td>
+                                        <td>{{$std->ratanilai()}}</td>
                                         @if (Auth()->user()->role == 'admin')
                                         <td>
                                             <a href="/siswa/{{$std->id}}/edit" class="btn btn-warning btn-xs">Edit</a>

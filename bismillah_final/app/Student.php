@@ -22,4 +22,23 @@ class student extends Model
     {
         return $this->belongsToMany(subject::class)->withPivot(['nilai'])->withTimeStamps();
     }
+
+    public function ratanilai()
+    {
+        $total = 0;
+        $banyak = 0;
+        
+        foreach ($this->subject as $subject ) {
+            if ($this->subject()->first()) {
+                $total+=$subject->pivot->nilai;
+                $banyak++;   
+            }
+        }
+        if ($total == 0) { //siswa belum ada nilai samsek
+            return 0;
+        }
+        return $total/$banyak;
+         
+
+    }
 }
